@@ -11,8 +11,8 @@ class MainWindow:
         self.master.title("Fingerprint Scanner")
 
         # Set window size and initial image
-        self.master.geometry("500x300")
-        self.fingerprint_image = Image.new('RGB', (300, 300)) 
+        self.master.geometry("500x500")
+        self.fingerprint_image = Image.new('RGB', (200, 200)) 
         self.tk_image = ImageTk.PhotoImage(self.fingerprint_image)
 
         # Create a styled frame to hold the image and button
@@ -25,7 +25,7 @@ class MainWindow:
 
         # Create a styled recapture button
         self.recapture_button = tk.Button(
-            self.container, text="Recapture Fingerprint", command=self.recapture_fingerprint, font=("Arial", 12, "bold"), bg="#337ab7", fg="#fff"
+            self.container, text="تسجيل الحضور", command=self.recapture_fingerprint, font=("Arial", 12, "bold"), bg="#337ab7", fg="#fff"
         )
         self.recapture_button.pack(pady=10)
 
