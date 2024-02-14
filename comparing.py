@@ -1,9 +1,30 @@
 from math import fabs
 import os
 import cv2
+import pandas as pd
+import numpy as np
+dataset_csv_path = "dataset/employees.csv"
 
+def FindEmployeeData(fingerprint_to_compare):
+    df = pd.read_csv("dataset/employees.csv")
+    scores_arr = []  # Array to store employee_score scores
 
-def Compare(image1_path,image2_path):
+    for index, row in df.iterrows():
+        fingerprint_path = row["fingerprint_image_path"]
+        _,employee_score = CompareFingerPrints(fingerprint_to_compare, fingerprint_path)
+        print(f"startcomaeing............ ( {fingerprint_to_compare} , {fingerprint_path} )  >>>>>>  SCORE: {employee_score} %")
+
+        scores_arr.append(employee_score)
+    best_score=max(scores_arr)
+    max_score_index = np.argmax(scores_arr)
+    employee_data = df.iloc[max_score_index].to_dict()
+    employee_data['score']=best_score
+    
+    if best_score>0:
+            return employee_data
+    else:
+        return None
+def CompareFingerPrints(image1_path,image2_path):
     best_score = 0
     filename = None
     image = None
@@ -37,13 +58,16 @@ def Compare(image1_path,image2_path):
         image = finger_print_two
         kp1, kp2, mp = keypoints_1, keypoints_2, match_points
 
-    print("SCORE: .................................. " + str(round(best_score,2))+" %")
     is_identical=best_score>0
-    return  is_identical,best_score
-    # if len(match_points) > 0:
-    #     result = cv2.drawMatches(finger_print_one, kp1, image, kp2, mp, None)
-    #     result = cv2.resize(result, None, fx=4, fy=4)
-    #     cv2.imshow("Result", result)
-    #     cv2.waitKey(0)
-    #     cv2.destroyAllWindows()
+    return  is_identical,round(best_score,2)
+ 
 
+def createDataSet():
+    data = [
+    {"id": 165, "name": "ali", "birthdate": "2000-05-15", "fingerprint_image_path": "temp/finger165.bmp", "face_image_path": "assets/ali.png"},
+    {"id": 1188, "name": "duaa", "birthdate": "1988-09-20", "fingerprint_image_path": "temp/fingers_188.bmp", "face_image_path": "assets/duaa.png"},
+        ]
+    df = pd.DataFrame(data)
+
+    csv_filename = "dataset/employees.csv"
+    df.to_csv(csv_filename, index=False)

@@ -1,7 +1,16 @@
 import ctypes as ct
+import random
 import PIL.Image as Image
 import PIL.ImageOps
 # A type-safe handle
+
+def capture_fingerprint_image():
+        userid =random.randint(1,1000)
+        filename = f"temp/finger_{userid}.bmp" 
+        SCAN(userid)
+        image = Image.open(filename)
+        return filename
+
 class FTRHANDLE(ct.c_void_p):
     pass
 
@@ -10,7 +19,8 @@ class FTRSCAN_IMAGE_SIZE(ct.Structure):
                 ('nHeight', ct.c_int),
                 ('nImageSize', ct.c_int))
 def SCAN(userid):
-    filename = f"fingers/finger_{userid}.bmp"  # Updated the filename format
+    print("start scanning......")
+    filename = f"temp/finger_{userid}.bmp"  # Updated the filename format
 
     PFTRSCAN_IMAGE_SIZE = ct.POINTER(FTRSCAN_IMAGE_SIZE)
 
@@ -25,28 +35,24 @@ def SCAN(userid):
     lib.ftrScanGetImage.restype = ct.c_int
 
     handle = lib.ftrScanOpenDevice()
-    try:
-        size = FTRSCAN_IMAGE_SIZE() # allocate output parameter storage
-        if not lib.ftrScanGetImageSize(handle, ct.byref(size)):
-            raise RuntimeError('get size failed')
-            return (False)
-        NDos = 4 # I don't know what this parameter means, from C# example
-        buffer = ct.create_string_buffer(size.nImageSize) # storage for image
-        if not lib.ftrScanGetImage(handle, NDos, buffer):
-            raise RuntimeError('get image failed')
-            return(False)
-        #lib.ftrScanGetImage(handle, NDos, buffer)
-        # buffer contains the image data now
-        #print((buffer))
-        img =Image.frombuffer("L", (320,480), buffer, 'raw', "L", 0, 1)
-        img = img.resize((320, 320))
-        img.save(filename)
-        inverted_image = PIL.ImageOps.invert(img)
-        inverted_image.save(filename)
-      
+    size = FTRSCAN_IMAGE_SIZE() # allocate output parameter storage
+    if not lib.ftrScanGetImageSize(handle, ct.byref(size)):
+        raise RuntimeError('get size failed')
+        return (False)
+    NDos = 4 # I don't know what this parameter means, from C# example
+    buffer = ct.create_string_buffer(size.nImageSize) # storage for image
+    if not lib.ftrScanGetImage(handle, NDos, buffer):
+        raise RuntimeError('get image failed')
+        return(False)
+    #lib.ftrScanGetImage(handle, NDos, buffer)
+    # buffer contains the image data now
+    #print((buffer))
+    img =Image.frombuffer("L", (320,480), buffer, 'raw', "L", 0, 1)
+    img = img.resize((320, 320))
+    img.save(filename)
+    inverted_image = PIL.ImageOps.invert(img)
+    inverted_image.save(filename)
+    
 
-    finally:
-        lib.ftrScanCloseDevice(handle)
-        return (True)
-if __name__ == '__main__':
-    SCAN("2")
+    lib.ftrScanCloseDevice(handle)
+    return (True)

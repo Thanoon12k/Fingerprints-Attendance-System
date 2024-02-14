@@ -1,46 +1,98 @@
-from gzip import FNAME
-import tkinter as tk
-from PIL import ImageTk, Image
+import datetime
 import random
-import connection as finger_scan
+from tkinter import LabelFrame, Canvas, Label, Tk,Frame
+from PIL import ImageTk, Image,ImageOps
 
-
-class MainWindow:
-    def __init__(self, master):
-        self.master = master
-        self.master.title("Fingerprint Scanner")
-
-        # Set window size and initial image
-        self.master.geometry("500x500")
-        self.fingerprint_image = Image.new('RGB', (200, 200)) 
-        self.tk_image = ImageTk.PhotoImage(self.fingerprint_image)
-
-        # Create a styled frame to hold the image and button
-        self.container = tk.Frame(self.master, bg="#f0f0f0", relief="sunken", bd=5)
-        self.container.pack(fill="both", expand=True)
-
-        # Create a label for the fingerprint image
-        self.label = tk.Label(self.container, image=self.tk_image, bg="#f0f0f0")
-        self.label.pack(padx=20, pady=20)
-
-        # Create a styled recapture button
-        self.recapture_button = tk.Button(
-            self.container, text="تسجيل الحضور", command=self.recapture_fingerprint, font=("Arial", 12, "bold"), bg="#337ab7", fg="#fff"
-        )
-        self.recapture_button.pack(pady=10)
-
-    def recapture_fingerprint(self):
-        userid =random.randint(1,1000)
-        filename = f"fingers/finger_{userid}.bmp"  # Updated the filename format
-        finger_scan.SCAN(userid)
-        img = Image.open(filename)
-        self.tk_image = ImageTk.PhotoImage(img)
+import customtkinter as ctk
+from sympy import false
+from comparing import FindEmployeeData, createDataSet
+from connection import capture_fingerprint_image
+from utils import getImage
+from PIL import Image
+class EmployeeInfoFrame(LabelFrame):
+    def __init__(self, master, employee_data):
+        super().__init__(master, text="Employee Information", font=ctk.CTkFont(size=22, weight="bold"))
+        self.employee_data = employee_data
         
-        # Update the displayed image and reference
-        self.label.configure(image=self.tk_image)
-        self.fingerprint_image = img
+        self.create_labels()
 
-root = tk.Tk()
-root.configure(bg="#f0f0f0")
-app = MainWindow(root)
-root.mainloop()
+    def create_labels(self):
+        # Define a CTkFont with the desired color
+        self.empty_label = ctk.CTkLabel(self, text     ="")
+        self.emp_id_label = ctk.CTkLabel(self, text     ="  ID         :  "+str(self.employee_data['id']),text_color="black" ,font=("Arial", 12, "bold"))
+        self.emp_name_label = ctk.CTkLabel(self, text   ="  Name       :  "+str(self.employee_data['name']),text_color="black" ,font=("Arial", 12, "bold")) 
+        self.attendance_state = ctk.CTkLabel(self, text="  Attendance Status :  "+str(self.employee_data['state']),text_color="black" ,font=("Arial", 12, "bold"))
+        self.attendance_date = ctk.CTkLabel(self, text="  Attendance Date :  "+str(self.employee_data['Attendance Date']),text_color="black" ,font=("Arial", 12, "bold"))
+        self.emp_birthdate_label =ctk.CTkLabel(self,text="  BirthDate  :  "+str(self.employee_data['birthdate']),text_color="black" ,font=("Arial", 12, "bold"))
+        self.finger_score =ctk.CTkLabel(self,text="  Score    :  #############  "+str(self.employee_data['score'])+" %  #############  ",text_color="black" ,font=("Arial", 12, "bold"))
+        img=Image.open(self.employee_data['face_image_path'])
+        self.UserImage=ctk.CTkImage(light_image=img,size=(150,150))
+        self.image_label = ctk.CTkLabel(self,text="", image=self.UserImage)
+
+        self.image_label.grid(row=0, column=0, sticky="w",pady=12)
+        self.emp_id_label.grid(row=1, column=0, sticky="w",pady=2)
+        self.emp_name_label.grid(row=2, column=0, sticky="w",pady=2)
+        self.attendance_state.grid(row=3, column=0, sticky="w",pady=2)
+        self.attendance_date.grid(row=4, column=0, sticky="w",pady=2)
+        self.emp_birthdate_label.grid(row=5, column=0, sticky="w",pady=2)
+        self.finger_score.grid(row=6, column=0, sticky="w",pady=2)
+    
+        
+class MainApp(Tk):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.employee_data = None
+
+        self.geometry("750x450")
+        self.title("Employee Information App")
+        img=Image.open("assets/finger_logo.PNG")
+        img = ImageOps.expand(img, border=2)
+        self.fingerPrintImage=ctk.CTkImage(light_image=img,size=(200,225))
+        self.image_label = ctk.CTkLabel(self,text="", image=self.fingerPrintImage)
+        
+        self.content_frame = Frame(self)
+        
+        self.content_frame.grid(row=0, column=0, padx=10, pady=(40,  20), sticky='ew')
+        self.employee_info_frame = None
+        self.ScanButton = ctk.CTkButton(self, text="SCAN FINGERPRINT", command=self.ScanFinger, width=100, height=50, corner_radius=8)
+        self.AddButton = ctk.CTkButton(self, text="ADD NEW", command=self.AddEmployee, width=100, height=50, corner_radius=8)
+        
+        self.image_label.grid(row=0, column=0, padx=10, pady=(10,  10), sticky='ns')        
+        self.ScanButton.grid(row=1, column=0, pady=5)
+        self.AddButton.grid(row=2, column=0, pady=5)
+        
+    def AddEmployee(self):
+        createDataSet()
+    def ScanFinger(self):
+        fingerprint_image_path=capture_fingerprint_image()
+        self.updateImage(path=fingerprint_image_path)        
+        employee_data=FindEmployeeData(fingerprint_image_path)
+        print(f"returned employee: {employee_data}")
+        self.employee_data=employee_data
+        self.employee_data['score']= employee_data['score']
+        
+        if self.employee_info_frame is None:
+            self.display_employee_info()
+        elif self.employee_info_frame is not None :
+            self.employee_info_frame.destroy()
+            self.employee_info_frame = None
+        
+        
+    def updateImage(self,path):
+        pil_image = Image.open(path)
+        pil_image = ImageOps.expand(pil_image, border=2)
+        self.UserImage=ctk.CTkImage(light_image=pil_image,size=(200,225))
+        self.image_label = ctk.CTkLabel(self,text="", image=self.UserImage)
+        self.image_label.grid(row=0, column=0, padx=10, pady=(10,  10), sticky='ns')
+    
+    def display_employee_info(self):
+            self.employee_data[ 'state']= 'Registered Successfully'
+            self.employee_data['Attendance Date']= datetime.datetime.now()
+            
+            
+            self.employee_info_frame = EmployeeInfoFrame(self, self.employee_data)
+            self.employee_info_frame.grid(row=0, column=1, padx=10, pady=10, sticky='ns')
+
+if __name__ == "__main__":
+    app = MainApp()
+    app.mainloop()

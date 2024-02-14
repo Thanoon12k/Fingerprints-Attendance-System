@@ -1,0 +1,3 @@
+id,name,birthdate,fingerprint_image_path,face_image_path
+165,ali,2000-05-15,temp/finger_165.bmp,assets/ali.png
+1188,duaa,1988-09-20,temp/finger_188.bmp,assets/duaa.jpeg
