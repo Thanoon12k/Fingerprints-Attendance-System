@@ -1,4 +1,6 @@
 from tkinter import LabelFrame, Canvas, Label, Tk,Frame
+from PIL import ImageTk, Image,ImageOps
+
 import customtkinter as ctk
 from utils import getImage
 from PIL import Image
@@ -33,28 +35,36 @@ class MainApp(Tk):
         super().__init__(*args, **kwargs)
         self.geometry("750x450")
         self.title("Employee Information App")
-        self.image = getImage(width=200, height=250,path="fingers/finger_943.bmp")
+        img=Image.open("fingers/finger_78.bmp")
+        img = ImageOps.expand(img, border=2)
+        self.fingerPrintImage=ctk.CTkImage(light_image=img,size=(200,250))
+        self.image_label = ctk.CTkLabel(self,text="", image=self.fingerPrintImage)
+        
         self.content_frame = Frame(self)
+        
         self.content_frame.grid(row=0, column=0, padx=10, pady=(40,  20), sticky='ew')
         self.employee_info_frame = None
-        self.imageArea = Label(self.content_frame, image=self.image)
         self.ScanButton = ctk.CTkButton(self, text="SCAN FINGERPRINT", command=self.ScanFinger, width=100, height=50, corner_radius=8)
         
         self.ScanButton.grid(row=2, column=0, pady=5)
-        self.imageArea.grid(row=0, column=0, padx=10, pady=(10,  10), sticky='ns')        
-    def updateImage(self,path):
-        self.image = getImage(width=200, height=250,path=path)
-        self.imageArea = ctk.CTkLabel(self.content_frame, image=self.image)
-        self.imageArea.grid(row=0, column=0, padx=10, pady=(10,   10), sticky='ns')
-    
+        self.image_label.grid(row=0, column=0, padx=10, pady=(10,  10), sticky='ns')        
+  
+        
     def ScanFinger(self):
-        self.updateImage("fingers/finger_78.bmp")
-
+        self.updateImage(path="fingers/finger_915.bmp")        
+  
         if self.employee_info_frame is not None:
             self.employee_info_frame.destroy()
             self.employee_info_frame = None
         else:
             self.display_employee_info()
+
+    def updateImage(self,path):
+        img=Image.open(path)
+        img = ImageOps.expand(img, border=2)
+        self.UserImage=ctk.CTkImage(light_image=img,size=(200,250))
+        self.image_label = ctk.CTkLabel(self,text="", image=self.UserImage)
+        self.image_label.grid(row=0, column=0, padx=10, pady=(10,  10), sticky='ns')
     
     def display_employee_info(self):
             employee_data = {
