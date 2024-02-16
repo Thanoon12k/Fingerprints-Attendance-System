@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from a_comparing import FindEmployeeData
+from a_employees_table import create_EmployeeTableFrame
 from a_frames import  create_EmployeeNotFoundFrame, create_WelcomeFrame, create_EmployeeFrame, create_ScanFrame
 from a_setup_app import setup_application
 from a_addFrame import create_AddEmployeeFrame
@@ -19,6 +20,7 @@ class Application:
         self.scan_frame = create_ScanFrame(self.root, self.emp_data)
         self.employee_data_frame = create_WelcomeFrame(self.root)
         self.add_employee_frame=None
+        self.employees_table_frame = None
         self.btn_scan = self.createButton("قراءة البصمة", self.scanFinger)
                 
         self.scan_frame.grid(row=0, column=0, sticky='nw')
@@ -59,7 +61,16 @@ class Application:
             
 
     def scanFinger(self):
-        root= self.root
+        self.scan_frame.destroy()
+        self.employee_data_frame.destroy()
+        self.btn_scan.destroy()
+        self.employees_table_frame = create_EmployeeTableFrame(self.root)
+        self.employees_table_frame.grid(row=0, column=0, sticky='nswe')  # Make it expand to fill the entire window
+
+        # Configure grid weights to make the frame expand with the root window
+        self.root.grid_rowconfigure(0, weight=1)
+        self.root.grid_columnconfigure(0, weight=1)
+        return
         
         # self.fingerprint_path=capture_fingerprint_image()
         self.emp_data=FindEmployeeData(self.fingerprint_path)

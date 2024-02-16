@@ -4,8 +4,8 @@ import customtkinter as ctk
 import pandas as pd
 
 
-def create_label(parent, text, font_size=26):
-    return ctk.CTkLabel(parent, text=text, font=("Arial", font_size, "bold"))
+def create_label(parent, text, font_size=26,text_color=None):
+    return ctk.CTkLabel(parent, text=text, font=("Arial", font_size, "bold"),text_color=text_color)
 
 
 def create_entry(parent, text, holder, font_size=26):

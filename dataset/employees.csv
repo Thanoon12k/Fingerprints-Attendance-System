@@ -1,4 +1,4 @@
-id,name,birthdate,fingerprint_image_path,face_image_path
+id,name,birthdate,fingerprint-image,face-image
 1,thanoon,1997,fingers/thanoon_.bmp,assets/ali.png
 2,ahmad,2000,fingers/ahmad_.bmp,assets/duaa.jpeg
 3,younis,1954,fingers/younis_.bmp,assets/duaa.jpeg
