@@ -1,5 +1,5 @@
 
-from comparing import FindEmployeeData
+from comparing2 import FindEmployeeData
 from connection import capture_fingerprint_image
 import customtkinter as ctk
 
@@ -12,8 +12,8 @@ def createButton(root,text,command,font_size=22):
             font=("Arial",   font_size, "bold"),border_spacing=8)
     return btn
 def scanFinger():
-    from main3 import get_Root
-    from frames import create_EmployeeNotFoundFrame, create_employee_form
+    from a_main import get_Root
+    from a_frames import create_EmployeeNotFoundFrame, create_employee_form
     root=get_Root()
     fingerprint_path="fingers/thanoon_.bmp"
     # fingerprint_path=capture_fingerprint_image()

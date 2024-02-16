@@ -3,7 +3,7 @@ from PIL import ImageTk, Image
 import os
 import sys
 from functools import partial
-import mainaa
+import a_mainaa
 import transformation as Trasnform
 import connection as finger_scan
 import mysql_conn 
@@ -222,8 +222,8 @@ class ETRPage:
                 self.label_file_explorer.place(x=5, y=360)
 
                 def tak_face(name):
-                    ff = mainaa.take_face(name)
-                    ff = mainaa.take_face(name)
+                    ff = a_mainaa.take_face(name)
+                    ff = a_mainaa.take_face(name)
                     self.face_label2 = Label(self.lgn_frame, text="", bg="#040405", fg="white",
                                             font=("yu gothic ui", 13, "bold"))
                     self.face_label2.place(x=5, y=430)
@@ -232,7 +232,7 @@ class ETRPage:
                         self.face_label2.configure(text=" face in your photo is founded")
                         key = (0.1, 0.1)
 
-                        sending = mainaa.Sender_voting_part(filename, ff, key, name_result + "_voting", id)
+                        sending = a_mainaa.Sender_voting_part(filename, ff, key, name_result + "_voting", id)
                         if (sending):
                             # validateLogin2 = partial(getinfo, Name, age, filename)
                             def subm():

@@ -1,10 +1,9 @@
 import customtkinter as ctk
-from comparing import FindEmployeeData
-from connection import capture_fingerprint_image
-from database import emp_data
-from frames import create_WelcomeScreen, create_fingerprint_frame
-from setup_app import setup_application
-from utils import createButton
+
+from a_database import emp_data
+from a_frames import create_WelcomeScreen, create_fingerprint_frame
+from a_setup_app import setup_application
+from a_utils import createButton
 
 
 root=setup_application(theme="Dark")
