@@ -47,8 +47,8 @@ class MainApp(Tk):
         self.title("Employee Information App")
         img=Image.open("assets/finger_logo.PNG")
         img = ImageOps.expand(img, border=2)
-        self.fingerPrintImage=ctk.CTkImage(light_image=img,size=(200,225))
-        self.image_label = ctk.CTkLabel(self,text="", image=self.fingerPrintImage)
+        self.fingerPrintImage=ctk.CTkImage(light_image=img,size=(220,360))
+        self.image_label = ctk.CTkLabel(self,text="", image=self.fingerPrintImage,width=240,height=360)
         
         self.content_frame = Frame(self)
         

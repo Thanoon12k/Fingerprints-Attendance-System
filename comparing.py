@@ -11,14 +11,17 @@ def FindEmployeeData(fingerprint_to_compare):
 
     for index, row in df.iterrows():
         fingerprint_path = row["fingerprint_image_path"]
-        _,employee_score = CompareFingerPrints(fingerprint_to_compare, fingerprint_path)
-        print(f"startcomaeing............ ( {fingerprint_to_compare} , {fingerprint_path} )  >>>>>>  SCORE: {employee_score} %")
+        print(f"start comparing............ ( {fingerprint_to_compare} , {fingerprint_path} )  >>>>>>  SCORE: {1} %")
 
+        _,employee_score = CompareFingerPrints(fingerprint_to_compare, fingerprint_path)
+        
         scores_arr.append(employee_score)
     best_score=max(scores_arr)
     max_score_index = np.argmax(scores_arr)
     employee_data = df.iloc[max_score_index].to_dict()
     employee_data['score']=best_score
+    employee_data["state"]="تم تسجيل الحضور"
+    employee_data["attendance_date"]="1/1/2024"
     
     if best_score>0:
             return employee_data

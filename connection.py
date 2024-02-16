@@ -48,7 +48,7 @@ def SCAN(userid):
     # buffer contains the image data now
     #print((buffer))
     img =Image.frombuffer("L", (320,480), buffer, 'raw', "L", 0, 1)
-    img = img.resize((320, 320))
+    img = img.resize((320, 480))
     img.save(filename)
     inverted_image = PIL.ImageOps.invert(img)
     inverted_image.save(filename)
