@@ -5,7 +5,6 @@ from a_frames import create_WelcomeScreen, create_fingerprint_frame
 from a_setup_app import setup_application
 from a_utils import createButton
 
-
 root=setup_application(theme="Dark")
 btn_scan            = createButton(root,"قراءة البصمة",None)
 scan_frame   =create_fingerprint_frame(root, emp_data)
