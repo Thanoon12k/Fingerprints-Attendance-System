@@ -5,23 +5,24 @@ import pandas as pd
 import numpy as np
 dataset_csv_path = "dataset/employees.csv"
 
+df = pd.read_csv("dataset/employees.csv")
+
 def FindEmployeeData(fingerprint_to_compare):
-    df = pd.read_csv("dataset/employees.csv")
+    
     scores_arr = []  # Array to store employee_score scores
 
     for index, row in df.iterrows():
         fingerprint_path = row["fingerprint_image_path"]
-        print(f"start comparing............ ( {fingerprint_to_compare} , {fingerprint_path} )  >>>>>>  SCORE: {1} %")
-
         _,employee_score = CompareFingerPrints(fingerprint_to_compare, fingerprint_path)
-        
+        print(f"start comparing............ ( {fingerprint_to_compare} , {fingerprint_path} )  >>>>>>  SCORE: {employee_score} %")
+
         scores_arr.append(employee_score)
     best_score=max(scores_arr)
     max_score_index = np.argmax(scores_arr)
     employee_data = df.iloc[max_score_index].to_dict()
     employee_data['score']=best_score
     employee_data["state"]="تم تسجيل الحضور"
-    employee_data["attendance_date"]="1/1/2024"
+    employee_data["attendance_date"]="1/1/2025"
     
     if best_score>0:
             return employee_data
@@ -65,12 +66,3 @@ def CompareFingerPrints(image1_path,image2_path):
     return  is_identical,round(best_score,2)
  
 
-def createDataSet():
-    data = [
-    {"id": 165, "name": "ali", "birthdate": "2000-05-15", "fingerprint_image_path": "temp/finger165.bmp", "face_image_path": "assets/ali.png"},
-    {"id": 1188, "name": "duaa", "birthdate": "1988-09-20", "fingerprint_image_path": "temp/fingers_188.bmp", "face_image_path": "assets/duaa.png"},
-        ]
-    df = pd.DataFrame(data)
-
-    csv_filename = "dataset/employees.csv"
-    df.to_csv(csv_filename, index=False)
