@@ -3,7 +3,7 @@ from gzip import FNAME
 import tkinter as tk
 from PIL import ImageTk, Image
 import random
-import connection as finger_scan
+import a_connection as finger_scan
 
 
 class MainWindow:

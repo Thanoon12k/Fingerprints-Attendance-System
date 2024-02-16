@@ -6,7 +6,7 @@ def create_label(parent, text,font_size=26):
 
 
 
-def create_fingerprint_frame(root, emp_data,finger_path="assets/finger_logo.PNG"):
+def create_ScanFrame(root, emp_data,finger_path="assets/finger_logo.PNG"):
     frm_employee = ctk.CTkFrame(root) 
     img_box=createLableImage(frm_employee,finger_path,350,400)
     lbl_image = create_label(frm_employee, f"  ضع اصبع الابهام على جهاز البصمة",14)
@@ -25,7 +25,7 @@ def create_EmployeeNotFoundFrame(root):
     btn_add.pack(pady=32)
     return frm_employee
 
-def create_WelcomeScreen(root):
+def create_WelcomeFrame(root):
     frm_employee = ctk.CTkFrame(root)
     lbl_image = create_label(frm_employee, f"يرجى مسح البصمة لتسجيل الحضور ")
     lbl_image.pack(pady=42,padx=24,fill="both",anchor="center")
@@ -33,7 +33,7 @@ def create_WelcomeScreen(root):
 
     
     
-def create_employee_form(root, emp_data):
+def create_EmployeeFrame(root, emp_data):
     frm_employee = ctk.CTkFrame(root)
     img_box=createLableImage(frm_employee,"assets/ali.png",200,200)
     lbl_image = create_label(frm_employee, f"الصورة الشخصية")
