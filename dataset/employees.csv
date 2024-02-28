@@ -1,8 +1,0 @@
-id,name,birthdate,fingerprint-image,face-image
-1,thanoon,1997,fingers/thanoon_.bmp,assets/ali.png
-2,ahmad,2000,fingers/ahmad_.bmp,assets/duaa.jpeg
-3,younis,1954,fingers/younis_.bmp,assets/duaa.jpeg
-4,nasra,1965,fingers/nasra_.bmp,assets/duaa.jpeg
-5,aya,2004,fingers/aya_.bmp,assets/duaa.jpeg
-6,karam,1992,fingers/karam_.bmp,assets/duaa.jpeg
-7,qussay,2006,fingers/qussay_.bmp,assets/duaa.jpeg

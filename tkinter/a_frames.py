@@ -49,7 +49,7 @@ def create_WelcomeFrame(root):
     
 def create_EmployeeFrame(root, emp_data):
     frm_employee = ctk.CTkFrame(root)
-    img_box=createLableImage(frm_employee,"assets/ali.png",200,200)
+    img_box=createLableImage(frm_employee,emp_data['face-image'],200,200)
     lbl_image = create_label(frm_employee, f"الصورة الشخصية")
     lbl_id = create_label(frm_employee,             f"الرقم الوظيفي  :  {emp_data['id']}")
     lbl_name = create_label(frm_employee,           f"        الاسم            :  {emp_data['name']}")

@@ -12,7 +12,7 @@ def FindEmployeeData(fingerprint_to_compare):
     scores_arr = []  # Array to store employee_score scores
 
     for index, row in df.iterrows():
-        fingerprint_path = row["fingerprint_image_path"]
+        fingerprint_path = row["fingerprint-image"]
         _,employee_score = CompareFingerPrints(fingerprint_to_compare, fingerprint_path)
         print(f"start comparing............ ( {fingerprint_to_compare} , {fingerprint_path} )  >>>>>>  SCORE: {employee_score} %")
 

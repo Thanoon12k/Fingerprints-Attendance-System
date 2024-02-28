@@ -5,6 +5,7 @@ from a_frames import  create_EmployeeNotFoundFrame, create_WelcomeFrame, create_
 from a_setup_app import setup_application
 from a_addFrame import create_AddEmployeeFrame
 from a_tools import saveToDataset
+from device import capture_fingerprint_image
 class Application:
     def __init__(self, theme="Dark"):
         self.emp_data = {
@@ -22,11 +23,12 @@ class Application:
         self.add_employee_frame=None
         self.employees_table_frame = None
         self.btn_scan = self.createButton("قراءة البصمة", self.scanFinger)
+        self.btn_employees_table = self.createButton("عرض سجل الموظفين ", self.show_employeesTable)
                 
         self.scan_frame.grid(row=0, column=0, sticky='nw')
         self.employee_data_frame.grid(row=0, column=1, sticky='nw',padx=40,pady=70)
         self.btn_scan.grid(row=1, column=0, sticky='n')
-
+        self.btn_employees_table.grid(row=2,column=0,pady=20)
     def createButton(self, text, command,font_size=22):
         btn=ctk.CTkButton(
             self.root,
@@ -56,23 +58,29 @@ class Application:
         self.employee_data_frame.destroy()
         self.add_employee_frame.grid(row=0, column=1, sticky='nw',padx=70)
 
-            
-            
-            
-
-    def scanFinger(self):
-        self.scan_frame.destroy()
+    def show_employeesTable(self):
+        if self.add_employee_frame is not None:
+            self.add_employee_frame.destroy()
+           
         self.employee_data_frame.destroy()
+        self.scan_frame.destroy()
         self.btn_scan.destroy()
-        self.employees_table_frame = create_EmployeeTableFrame(self.root)
-        self.employees_table_frame.grid(row=0, column=0, sticky='nswe')  # Make it expand to fill the entire window
+        self.btn_employees_table.destroy()
+        self.employees_table_frame=create_EmployeeTableFrame(self.root)
+        self.employees_table_frame.grid()
 
-        # Configure grid weights to make the frame expand with the root window
-        self.root.grid_rowconfigure(0, weight=1)
-        self.root.grid_columnconfigure(0, weight=1)
-        return
-        
-        # self.fingerprint_path=capture_fingerprint_image()
+            
+            
+            
+
+    def scanFinger(self):   
+        self.fingerprint_path="fingers/qussay_.bmp"
+        if self.scan_frame is not None:
+            self.scan_frame.destroy()
+
+            self.scan_frame=create_ScanFrame(self.root, self.emp_data,self.fingerprint_path)
+            self.scan_frame.grid(row=0, column=0, sticky='nw')
+
         self.emp_data=FindEmployeeData(self.fingerprint_path)
         self.show_EmployeeInfoFrame()
         return 0

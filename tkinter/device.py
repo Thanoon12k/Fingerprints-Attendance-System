@@ -3,12 +3,14 @@ import random
 import PIL.Image as Image
 import PIL.ImageOps
 # A type-safe handle
+import os
 
+current_directory = os.getcwd()
+dll_path = os.path.join(current_directory, 'ftrScanAPI')
 def capture_fingerprint_image():
         userid =random.randint(1,1000)
         filename = f"temp/finger_{userid}.bmp" 
         SCAN(userid)
-        image = Image.open(filename)
         return filename
 
 class FTRHANDLE(ct.c_void_p):
@@ -23,8 +25,13 @@ def SCAN(userid):
     filename = f"temp/finger_{userid}.bmp"  # Updated the filename format
 
     PFTRSCAN_IMAGE_SIZE = ct.POINTER(FTRSCAN_IMAGE_SIZE)
+    if os.path.isfile(dll_path):
+        print("DLL exists.",dll_path)
+    else:
+        print("DLL does not exist.",dll_path)
 
-    lib = ct.WinDLL('ftrScanAPI')  # due to __stdcall, only matters if 32-bit Python and DLL
+    lib = ct.WinDLL("ftrScanAPI")  # due to __stdcall, only matters if 32-bit Python and DLL
+    print(lib)
     lib.ftrScanOpenDevice.argtypes = ()
     lib.ftrScanOpenDevice.restype = FTRHANDLE
     lib.ftrScanCloseDevice.argtypes = FTRHANDLE,
@@ -50,6 +57,7 @@ def SCAN(userid):
     img =Image.frombuffer("L", (320,480), buffer, 'raw', "L", 0, 1)
     img = img.resize((320, 480))
     img.save(filename)
+    print("fingerprint scanned and saved in :",filename)
     inverted_image = PIL.ImageOps.invert(img)
     inverted_image.save(filename)
     
