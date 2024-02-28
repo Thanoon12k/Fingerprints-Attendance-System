@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h2>Student Details</h2>
+<div class="container">
+    <div class="card" style="width: 18rem;">
+        <img src="{% static 'images/fingerprintscan.png'%}" class="card-img-top" alt="{{ student.name }}">
+        <div class="card-body">
+            <button class="btn btn-info" onclick="saveImage()">Scan Finger</button>
+        
+        </div>
+    </div>
+</div>
+
+<script>
+    function saveImage() {
+        // Implement the logic to save the image here
+        alert('Image saved');
+    }
+</script>
+
+{% endblock %}

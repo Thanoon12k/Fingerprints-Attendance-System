@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Student Details</h2>
+<div class="container">
+    <div class="card" style="width: 18rem;">
+        <img src="{{ student_fingerprintimage_url }}" class="card-img-top" alt="{{ student.name }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ student.name }}</h5>
+            <p class="card-text">
+                <strong>ID:</strong> {{ student.id }}<br>
+                <strong>Department:</strong> {{ student.department }}<br>
+                <strong>Level:</strong> {{ student.stage }}<br>
+                <strong>Phone Number:</strong> {{ student.phone_number }}
+            </p>
+        
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

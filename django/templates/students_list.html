@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Students List</h2>
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Level</th>
+                <th>Phone Number</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.id }}</td>
+                <td>{{ student.name }}</td>
+                <td>{{ student.department }}</td>
+                <td>{{ student.stage }}</td>
+                <td>{{ student.phone_number }}</td>
+                <td><img src="{{ student.fingerprint_image.url }}" alt="{{ student.name }}" width="50" height="50"></td>
+                <td>
+                    <a href="{% url 'edit_student' student.pk %}">Edit</a> |
+                    <a href="{% url 'delete_student' student.pk %}" >Delete</a>
+                </td>
+                
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No students found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

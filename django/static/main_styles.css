@@ -1,0 +1,32 @@
+.container {
+    /* Center the container vertically */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Set minimum height for full viewport */
+  }
+.btn {
+    /* Increase button size with font size and padding */
+    font-size: 20px;
+    padding: 15px 30px;
+    border-radius: 8px; /* Add rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    transition: all 0.2s ease-in-out; /* Add smooth hover effect */
+    margin: 15px;
+}
+  
+  .btn:hover {
+    transform: scale(1.02); /* Slightly scale up on hover */
+    background-color: #ffffff; /* Change background color on hover */
+  }
+  
+  .navbar-brand {
+    font-weight: bold; /* Make the brand name bold */
+  }
+  
+  .card {
+    /* Adjust card styling as needed for your design */
+    border-radius: 10px; /* Add rounded corners to the card */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    margin: 15px;
+  }
