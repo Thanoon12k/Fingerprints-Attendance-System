@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+
+  <div class="card">
+
+    <div class="image-container">
+      <img src="{{ fingerprint_image_url }}" class="card-img-top" alt="{{ student.name }}">
+     {% if not attend_time %}
+      <p class="instruction-text">Please place your finger above the fingerprint device</p>
+      {% endif %}
+    </div>
+
+    <div class="card-body">
+      <form action="" method="post">
+        {% csrf_token %}
+        <button class="btn btn-info" type="submit">Scan Finger</button>
+      </form>
+
+      <div class="card-body">
+        <h5 class="card-title">{{ name }}</h5>
+        <p class="card-text">
+          <strong>Date: </strong>{{ attend_time }}<br>
+          <strong>Department:</strong> {{ department }}<br>
+          <strong>Level:</strong> {{ stage }}<br>
+          <strong>Lesson:</strong> {{ lesson }}<br>
+          <strong>ID:</strong> {{ id }}<br>
+          <strong>Phone Number:</strong> {{ phone_number }}<br>
+         
+        </p>
+      </div>
+
+    </div>
+
+    <div>
+       <a class="btn btn-warn" href="{% url 'main_screen'%}">Back</a>
+       <a class="btn btn-info" href="{% url 'main_screen'%}">Register Attendance</a>
+      </div>
+  </div>
+</div>
+
+{% endblock %}

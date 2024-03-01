@@ -2,9 +2,32 @@
 
 {% block content %}
  <h2>Add a new student</h2>
+ <div class="d-flex">
+
  <form method="post" enctype="multipart/form-data" class="your-custom-form-class">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="btn btn-info">Add Student</button>
  </form>
+ <div class="image-preview">
+   <a  class="btn btn-info" onclick="get_scanned_image()">scan FingerPrint</a>
+   <br>
+   <label>Preview:</label>
+   <img id="preview-image" alt="Selected image preview"  src="images/login.bmp" style="max-width: 200px; max-height: 380px; object-fit: contain;">
+ </div>
+ </div>
+ <script>
+function get_scanned_image() {
+    var url = '/process-image'; // Adjust the URL as necessary
+    
+    fetch(url, {
+        method: 'GET',
+    })
+    .then(response => response.json()) // Parse the response as JSON
+    .then(data => {
+      var imageUrl = data.scanned_image_url + '?refresh=' + new Date().getTime();
+        document.getElementById('preview-image').src = imageUrl;    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
 {% endblock %}
