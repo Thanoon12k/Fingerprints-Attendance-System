@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ <h2>Add a new Lesson</h2>
+ <div class="d-flex">
+
+ <form method="post" enctype="multipart/form-data" class="your-custom-form-class">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-info">Add Lesson</button>
+ </form>
+
+ </div>
+
+{% endblock %}

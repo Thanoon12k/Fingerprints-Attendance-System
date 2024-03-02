@@ -1,10 +1,21 @@
 
 import os
+from tkinter import image_names
 from django.conf import settings
 from datetime import datetime
 from datetime import datetime
+from django.db.models import Q
+
+from mainapp.models import Student
 from .connections import SCAN_IMAGE
 from .comparing import compare_fingerprints
+from pathlib import Path
+
+
+temp_image_name='temp_000.bmp'
+compare_folder=settings.BASE_DIR / 'media/fingers'
+temp_image_path=settings.BASE_DIR / f'media/temp/{temp_image_name}'
+temp_image_url='/media/temp/'+temp_image_name
 def getArrivalTime():
         now = datetime.now()
         day_of_week = now.strftime("%A")  # Ex: "Tuesday"
@@ -25,33 +36,37 @@ def getArrivalTime():
         return arrival_time
 
 def scanFingerprintImage():
-    image_name = 'img_001.bmp'
-    img_path = settings.MEDIA_ROOT+'/temp/'+image_name
-    img_url = settings.MEDIA_URL+ 'temp/'+ image_name
-    print(f'returned \nurl: {img_url},\n   path: {img_path}')
+    SCAN_IMAGE(temp_image_path)
+    return temp_image_path
 
-    SCAN_IMAGE(img_path)
-    
-    return img_url, img_path
-def getStudentData(img1_path='',img2_path=''):
-    img1_path = settings.MEDIA_ROOT+'/temp/img_000.bmp'
-    img2_path1 = settings.MEDIA_ROOT+'/temp/img_001.bmp'
-    
-    similarity_score = compare_fingerprints(img1_path, img2_path1)
-    if similarity_score>1: 
-        print("we found person")
-    else:
-        print("we cant find person")
-    print(f"Similarity score: {similarity_score}")
+def getStudentData():
 
+    for filename in os.listdir(compare_folder):
+        compare_image_path = compare_folder / filename
+        
+        similarity_score = compare_fingerprints(str(temp_image_path), str(compare_image_path))
+        if similarity_score > 1:        
+            file_name = os.path.basename(compare_image_path)
+            name, phone_number = file_name.split('_')[0], file_name.split('_')[1].split('.')[0]
+            print(f'\n\nFound simsilarity: {name}, Phone: {phone_number} , vaue <  {similarity_score}  >')
 
-    context={
-        'name':"Thanoon Younis",
-        'id':99,
-        'lesson':'mathmatic',
-        'department':'computers',
-        'phone_number':7704564613,
-        'stage':'4th',
-        'attend_time':getArrivalTime(),
-    }
-    return context
+            student = Student.objects.filter(Q(name__iexact=name) & Q(phone_number__iexact=phone_number)).first()
+           
+            if student:
+                context = {
+                    'name': student.name,
+                    'id': student.id,
+                    'lesson': 'mathmatic',
+                    'department': 'computers',
+                    'phone_number': student.phone_number,
+                    'stage': '4th',
+                    'scanned_image_url':temp_image_url,
+                    'attend_time': getArrivalTime(),
+                }
+                print(f'Found in the database: {student.name}, Phone: {student.phone_number}')
+                return context
+            else:
+                print('No student found with the given name and phone number.')
+           
+    print('no match was founding !!!')
+    return {'name':'student not found !!'}

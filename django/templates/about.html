@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>About Us</h2>
+
+<section class="container about-section">
+  <div class="row">
+    <div class="col-md-6 d-flex justify-content-center align-items-center">
+      <img src="media/images/mousel.png" class="img-fluid rounded-circle mb-3 shadow" alt="University of Mosul Logo" style="width: 200px; height: 200px;">
+    </div>
+
+    <div class="col-md-6">
+      <h1 class="display-4 mb-4 text-primary">About the Attendance System</h1>
+      <p class="lead">
+        This attendance system, developed by graduates of the University of Mosul, utilizes fingerprint technology to provide a secure and efficient method for tracking student attendance. It aims to streamline the attendance process for both students and faculty, ensuring accurate data and reducing administrative burdens.
+      </p>
+
+      <h2>Developed By</h2>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item list-group-item-action bg-light text-dark border-secondary">Alice Brown</li>
+        <li class="list-group-item list-group-item-action bg-light text-dark border-secondary">Charlie Davis</li>
+        <li class="list-group-item list-group-item-action bg-light text-dark border-secondary">Emily Wilson</li>
+        <li class="list-group-item list-group-item-action bg-light text-dark border-secondary">Ethan Miller</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

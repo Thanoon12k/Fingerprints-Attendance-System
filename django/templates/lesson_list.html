@@ -1,0 +1,31 @@
+{% extends 'base.html' %} {% block content %}
+<h2>Lessons List</h2>
+<div class="container">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Class Name</th>
+        <th>Start Date Time</th>
+        <th>Stage</th>
+        <th>Department</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for lesson in lessons %}
+      <tr>
+        <td>{{ lesson.id }}</td>
+        <td>{{ lesson.name }}</td>
+        <td>{{lesson.day_of_week}} - {{ lesson.start_time }}</td>
+        <td>{{ lesson.stage }}</td>
+        <td>{{ lesson.department }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6">No students found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

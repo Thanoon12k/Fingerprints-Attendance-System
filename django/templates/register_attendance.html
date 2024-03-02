@@ -1,44 +1,59 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %}
 <div class="container">
+  <div class="d-flex">
 
-  <div class="card">
-
-    <div class="image-container">
-      <img src="{{ fingerprint_image_url }}" class="card-img-top" alt="{{ student.name }}">
-     {% if not attend_time %}
-      <p class="instruction-text">Please place your finger above the fingerprint device</p>
-      {% endif %}
-    </div>
-
-    <div class="card-body">
-      <form action="" method="post">
-        {% csrf_token %}
-        <button class="btn btn-info" type="submit">Scan Finger</button>
-      </form>
-
+    <form method="post" action=" {% url 'get_student_data' %}" class="card">
+      {% csrf_token%}
+      <div class="image-container">
+        <img id="preview-image" src="{{ scanned_image_url }}" class="card-img-top" alt="{{ student.name }}" />
+      </div>
       <div class="card-body">
+        <button type="submit" class="btn btn-info" onclick="scanImage()">scan FingerPrint</button>
+      </div>
+    </form>
+    <form method="post" action="{% url 'register_attendance'%}" class="card">
+      {% csrf_token %}
+      <div id="student-content" class="card-body">
         <h5 class="card-title">{{ name }}</h5>
         <p class="card-text">
-          <strong>Date: </strong>{{ attend_time }}<br>
-          <strong>Department:</strong> {{ department }}<br>
-          <strong>Level:</strong> {{ stage }}<br>
-          <strong>Lesson:</strong> {{ lesson }}<br>
-          <strong>ID:</strong> {{ id }}<br>
-          <strong>Phone Number:</strong> {{ phone_number }}<br>
-         
+          <strong>Date: </strong>{{ attend_time }}<br />
+          <strong>Department:</strong> {{ department }}<br />
+          <strong>Level:</strong> {{ stage }}<br />
+          <strong>Lesson:</strong> {{ lesson }}<br />
+          <strong>ID:</strong> {{ id }}<br />
+          <strong>Phone Number:</strong> {{ phone_number }}<br />
+          <input id="student_id" name="student_id" type="text" style="display: none" value="{{id}}">
+
         </p>
       </div>
-
-    </div>
-
-    <div>
-       <a class="btn btn-warn" href="{% url 'main_screen'%}">Back</a>
-       <a class="btn btn-info" href="{% url 'main_screen'%}">Register Attendance</a>
+      <div id="user-waiting" style="visibility: hidden;" class="card-body">
+        <h5 class="card-title text-center">Attendance Confirmation</h5>
+        <p class="card-text text-center">Please wait while your FingerPrint Being Compared.</p>
+        <div class="card-title text-center">
+          <div class="spinner-border text-primary m-2" role="status" aria-hidden="true"></div>
+          <div class="spinner-border text-secondary m-2" role="status" aria-hidden="true"></div>
+          <div class="spinner-border text-success m-2" role="status" aria-hidden="true"></div>
+        </div>
       </div>
+      <button type="submit" class="btn btn-info">Register
+        Attendance a</button>
+    </form>
   </div>
-</div>
+  <script>
 
-{% endblock %}
+    async function scanImage() {
+      var url = '/get-scanned-image'; // Adjust the URL as necessary
+      document.getElementById('student-content').style.visibility = 'hidden';
+      document.getElementById('user-waiting').style.visibility = 'visible';
+      fetch(url, {
+        method: 'GET',
+      })
+        .then(response => response.json())
+        .then(data => {
+          var imageUrl = data.scanned_image_url + '?refresh=' + new Date().getTime();
+          document.getElementById('preview-image').src = imageUrl;
+        })
+        .catch(error => console.error('Error:', error));
+    }
+  </script>
+  {% endblock %}
