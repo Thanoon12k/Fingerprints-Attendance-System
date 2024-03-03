@@ -1,50 +1,44 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load static %} {% block content %}
 
-{% load static %}
-{% block content %}
-
-
-  <div class="container">
-
-    <div class="card mx-auto">
-      <div class="row text-center justify-content-center">
-        <div class="col-md-4">
-            <a href="{% url 'add_student' %}">
-                <button type="button" class="btn btn-warning">Add Student</button>
-               </a>
-               
-        </div>
-        <div class="col-md-4">
-                <a  href="{% url 'students_list' %}">
-                    <button type="button" class="btn btn-warning">Students List</button>
-                </a>
-            
-        </div>
-        <div class="col-md-4">
-          <a  href="{% url 'attendance_list' %}">
-            <button type="button" class="btn btn-warning">Attend List</button>
+<div class="container">
+  <div class="card mx-auto">
+    <div class="row text-center justify-content-center">
+      <div class="col-md-4">
+        <a href="{% url 'add_student' %}">
+          <button type="button" class="btn btn-warning">ADD Student</button>
         </a>
-        </div>
       </div>
-      <div class="row text-center justify-content-center">
-        <div class="col-md-4">
-          <a  href="{% url 'add_lesson'  %}">
-            <button type="button" class="btn btn-warning"> Add Lesson</button>
-        </a>           </div>
-        <div class="col-md-4">
-          <a  href="{% url 'register_attendance'  %}">
-          <button type="button" class="btn btn-warning">Register Attendance</button>
-          </a>
-        </div>
-        <div class="col-md-4">
-          <a  href="{% url 'lessons_list'  %}">
+      <div class="col-md-4">
+        <a href="{% url 'register_attendance'  %}">
+          <button type="button" class="btn btn-warning">
+            Register Attendance
+          </button>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="{% url 'add_lesson'  %}">
+          <button type="button" class="btn btn-warning">ADD Lesson</button>
+        </a>
+      </div>
+    </div>
+    <div class="row text-center justify-content-center">
+      <div class="col-md-4">
+        <a href="{% url 'lessons_list'  %}">
           <button type="button" class="btn btn-warning">Lessons List</button>
-          </a>
-        </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="{% url 'students_list' %}">
+          <button type="button" class="btn btn-warning">Students List</button>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="{% url 'attendance_list' %}">
+          <button type="button" class="btn btn-warning">Attend List</button>
+        </a>
       </div>
     </div>
   </div>
+</div>
 
-
-
-  {% endblock %}
+{% endblock %}

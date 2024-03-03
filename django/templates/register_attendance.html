@@ -2,30 +2,51 @@
 <div class="container">
   <div class="d-flex">
 
-    <form method="post" action=" {% url 'get_student_data' %}" class="card">
+    <form name="fingerprint-image-form" method="post" action=" {% url 'get_student_data' %}" class="card">
       {% csrf_token%}
       <div class="image-container">
-        <img id="preview-image" src="{{ scanned_image_url }}" class="card-img-top" alt="{{ student.name }}" />
+        <img id="preview-image" src="{{ scanned_image }}" class="card-img-top" alt="{{ student.name }}" />
       </div>
       <div class="card-body">
         <button type="submit" class="btn btn-info" onclick="scanImage()">scan FingerPrint</button>
       </div>
     </form>
-    <form method="post" action="{% url 'register_attendance'%}" class="card">
+    <form name="student-data-form" method="post" action="{% url 'register_attendance'%}" class="card">
       {% csrf_token %}
+      {% if card_title == "Sorry no lesson allowed to attend now !!!" %}
       <div id="student-content" class="card-body">
-        <h5 class="card-title">{{ name }}</h5>
+        <h5 class="card-title"> Sorry no lesson allowed to attend now !!! </h5>
+        
+        </p>
+      </div>
+      {% elif card_title == "no student Exist with this fingerprint !!" %}
+      <div id="student-content" class="card-body">
+        <h5 class="card-title"> No Student Exist with this fingerprint !! </h5>
+        <br>
+        <strong>Date: </strong>{{ attend_time }}<br />
+          <strong>Lesson:</strong> {{ lesson }}<br />
+       <strong>Department:</strong> {{ department }}<br />
+        <strong>Stage:</strong> {{ stage }}<br />
+       </p>
+      </div>
+      {% elif phone_number %}
+      <div id="student-content" class="card-body">
+        <h5 class="card-title">{{card_title}}</h5>
+       
         <p class="card-text">
           <strong>Date: </strong>{{ attend_time }}<br />
           <strong>Department:</strong> {{ department }}<br />
-          <strong>Level:</strong> {{ stage }}<br />
+          <strong>Stage:</strong> {{ stage }}<br />
           <strong>Lesson:</strong> {{ lesson }}<br />
           <strong>ID:</strong> {{ id }}<br />
           <strong>Phone Number:</strong> {{ phone_number }}<br />
           <input id="student_id" name="student_id" type="text" style="display: none" value="{{id}}">
+          <input id="lesson_name" name="lesson_name" type="text" style="display: none" value="{{lesson}}">
 
         </p>
       </div>
+      {% endif %}
+     
       <div id="user-waiting" style="visibility: hidden;" class="card-body">
         <h5 class="card-title text-center">Attendance Confirmation</h5>
         <p class="card-text text-center">Please wait while your FingerPrint Being Compared.</p>
@@ -35,8 +56,11 @@
           <div class="spinner-border text-success m-2" role="status" aria-hidden="true"></div>
         </div>
       </div>
+      {% if phone_number %}
+
       <button type="submit" class="btn btn-info">Register
-        Attendance a</button>
+        Attendance </button>
+        {% endif %}
     </form>
   </div>
   <script>
@@ -50,7 +74,7 @@
       })
         .then(response => response.json())
         .then(data => {
-          var imageUrl = data.scanned_image_url + '?refresh=' + new Date().getTime();
+          var imageUrl = data.scanned_image + '?refresh=' + new Date().getTime();
           document.getElementById('preview-image').src = imageUrl;
         })
         .catch(error => console.error('Error:', error));

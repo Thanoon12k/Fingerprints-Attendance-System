@@ -4,11 +4,76 @@
  <h2>Add a new Lesson</h2>
  <div class="d-flex">
 
- <form method="post" enctype="multipart/form-data" class="your-custom-form-class">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-info">Add Lesson</button>
- </form>
+   <form method="post" enctype="multipart/form-data" class="your-custom-form-class">
+      {% csrf_token %}
+      <p>
+      <label for="id_name">Name:</label>
+      <input type="text" name="name" maxlength="255" required="" id="id_name">
+      
+      
+    </p>
+  
+    
+    <p>
+      <label for="id_day_of_week">Day of week:</label>
+      <select name="day_of_week" id="id_day_of_week">
+    <option value="sunday" selected="">Sunday</option>
+  
+    <option value="monday">Monday</option>
+  
+    <option value="tuesday">Tuesday</option>
+  
+    <option value="wednesday">Wednesday</option>
+  
+    <option value="thursday">Thursday</option>
+  
+  </select>
+      
+      
+    </p>
+  
+    
+    <p>
+      <label for="id_department">Department:</label>
+      <select name="department" id="id_department">
+    <option value="computer_engineering" selected="">Computer Engineering</option>
+  
+    <option value="electrical_engineering">Electrical Engineering</option>
+  
+    <option value="construction">Construction Engineering</option>
+  
+    <option value="power_and_electric_engineering">Power and Electric Engineering</option>
+  
+  </select>
+      
+      
+    </p>
+  
+    
+    <p>
+      <label for="id_stage">Stage:</label>
+      <select name="stage" id="id_stage">
+    <option value="1st">1st</option>
+  
+    <option value="2nd">2nd</option>
+  
+    <option value="3rd">3rd</option>
+  
+    <option value="4th" selected="">4th</option>
+  
+  </select>
+      
+      
+        
+      
+    </p>
+      <div class="nativeTimePicker">
+        <label for="start_time">Start time:</label>
+        <input id="start_time" type="time" name="start_time" min="00:00" max="23:59" required="">
+     </div>
+  
+      <button type="submit" class="btn btn-info">Add Lesson</button>
+   </form>
 
  </div>
 

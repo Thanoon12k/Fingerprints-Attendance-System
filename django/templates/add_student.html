@@ -13,7 +13,7 @@
    <a  class="btn btn-info" onclick="get_scanned_image()">scan FingerPrint</a>
    <br>
    <label>Preview:</label>
-   <img id="preview-image" alt="Selected image preview"  src="images/login.bmp" style="max-width: 200px; max-height: 380px; object-fit: contain;">
+   <img id="preview-image" alt="Selected image preview"  src="{{scanned_image}}" style="max-width: 200px; max-height: 380px; object-fit: contain;">
  </div>
  </div>
  <script>
@@ -25,7 +25,7 @@ function get_scanned_image() {
     })
     .then(response => response.json()) // Parse the response as JSON
     .then(data => {
-      var imageUrl = data.scanned_image_url + '?refresh=' + new Date().getTime();
+      var imageUrl = data.scanned_image + '?refresh=' + new Date().getTime();
         document.getElementById('preview-image').src = imageUrl;    })
     .catch(error => console.error('Error:', error));
 }
