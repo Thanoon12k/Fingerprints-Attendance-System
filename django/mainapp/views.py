@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import *
 
-from mainapp.comparing import getStudentData, scanFingerprintImage, temp_image_url
+from mainapp.comparing import getStudentData, scanFingerprintImage, temp_image_url, testComparison
 from .forms import StudentForm, SubjectForm
 from .models import Attendance, Student, Subject
 from .utils import getArrivalTime, getNowLesson
@@ -133,8 +133,9 @@ def scan_finger_image(request):
 def get_student_data(request):
     context={}
     scanFingerprintImage()
-    student = getStudentData()
-    now_lesson=getNowLesson(minutes_allowed=30)
+    # student = getStudentData()
+    student = testComparison()
+    now_lesson=getNowLesson(minutes_allowed=60)
     now_time=getArrivalTime(day_of_week=True)
     if not now_lesson:
             context={'card_title':'Sorry no lesson allowed to attend now !!!'}
