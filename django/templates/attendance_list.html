@@ -9,7 +9,7 @@
   
 <form method="get" class="form-inline "style="display: flex; flex-direction: row; align-items: center;">
     <label for="search_term">Search: </label>
-    <input type="text" class="form-control form-inline" id="search_term" name="search_term" placeholder="Enter name, Class name">
+    <input type="text" class="form-control form-inline" id="search_term" name="search_term" placeholder="Enter name, Class name or Stage">
     <button type="submit" class="btn btn-primary">Search</button>
   </form>
 
@@ -18,6 +18,7 @@
       <tr>
         <th>ID</th>
         <th>Student</th>
+        <th>Stage</th>
         <th>Class Name</th>
         <th>Attend Date</th>
       </tr>
@@ -27,6 +28,7 @@
       <tr>
         <td>{{ attend.id }}</td>
         <td>{{ attend.student }}</td>
+        <td>{{ attend.student.stage }}</td>
         <td>{{ attend.class_name }}</td>
         <td>{{ attend.attend_date }}</td>
       </tr>

@@ -44,7 +44,8 @@ class AttendanceList(LoginRequiredMixin, ListView):
         if search_term and search_term != '':
            all_data = Attendance.objects.filter(
             Q(student__name__icontains=search_term) |
-            Q(class_name__name__icontains=search_term) 
+            Q(student__name__icontains=search_term) |
+            Q(class_name__stage__icontains=search_term) 
         ).order_by('id')
         return all_data
 
