@@ -16,6 +16,7 @@ def scanFingerprintImage():
     SCAN_IMAGE(temp_image_path)
     return temp_image_path
 
+from django.db.models import Q
 
 from django.db.models import Q
 

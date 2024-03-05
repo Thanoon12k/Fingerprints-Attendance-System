@@ -16,7 +16,7 @@ class FTRSCAN_IMAGE_SIZE(ct.Structure):
 def SCAN_IMAGE(img_name="temp/finger_000.bmp"):
     try:
         PFTRSCAN_IMAGE_SIZE = ct.POINTER(FTRSCAN_IMAGE_SIZE)
-        lib = ct.WinDLL("ftrScanAPI")  # due to __stdcall, only matters if 32-bit Python and DLL
+        lib = ct.WinDLL("ftrScanAPI")  
         lib.ftrScanOpenDevice.argtypes = ()
         lib.ftrScanOpenDevice.restype = FTRHANDLE
         lib.ftrScanCloseDevice.argtypes = FTRHANDLE,

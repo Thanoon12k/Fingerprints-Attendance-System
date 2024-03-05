@@ -146,7 +146,7 @@ def get_student_data(request):
     context={}
     scanFingerprintImage()
     student = getStudentData()
-    now_lesson=getNowLesson(minutes_allowed=30)
+    now_lesson=getNowLesson(minutes_allowed=60)
     now_time=getArrivalTime(day_of_week=True)
     if not now_lesson:
             context={'card_title':'Sorry no lesson allowed to attend now !!!'}
