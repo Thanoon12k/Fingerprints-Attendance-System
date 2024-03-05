@@ -5,6 +5,12 @@
     justify-content: center;
     min-height: 100vh; /* Set minimum height for full viewport */
   }
+  .searchform{
+    display: flex-d;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Set minimum height for full viewport */
+  }
 .btn {
     /* Increase button size with font size and padding */
     font-size: 20px;

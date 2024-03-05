@@ -1,9 +1,11 @@
 from datetime import datetime, timedelta
 from os import name
+from django.db.models.query import QuerySet
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import *
+from django.db.models import Q
 
 from mainapp.comparing import getStudentData, scanFingerprintImage, temp_image_url
 from .forms import StudentForm, SubjectForm
@@ -34,8 +36,17 @@ class StudentsList(LoginRequiredMixin, ListView):
 class AttendanceList(LoginRequiredMixin, ListView):
     model = Attendance
     template_name = 'attendance_list.html'
-    context_object_name = 'attendance'
+    context_object_name = 'attendances'
+    def get_queryset(self) :
+        all_data=Attendance.objects.all().order_by('id')
+        search_term =self.request.GET.get('search_term') 
 
+        if search_term and search_term != '':
+           all_data = Attendance.objects.filter(
+            Q(student__name__icontains=search_term) |
+            Q(class_name__name__icontains=search_term) 
+        ).order_by('id')
+        return all_data
 
 class LessonsList(LoginRequiredMixin, ListView):
     model = Subject

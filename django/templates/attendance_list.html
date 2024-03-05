@@ -2,34 +2,40 @@
 
 {% block content %}
 <h2>Attend List</h2>
-<div class="container">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Student</th>
-                <th>Class Name</th>
-                <th>Attend Date</th>
-            
-            </tr>
-        </thead>
-        <tbody>
-            {% for attend in attendance %}
-            <tr>
-                <td>{{ attend.id }}</td>
-                <td>{{ attend.student }}</td>
-                <td>{{ attend.class_name }}</td>
-                <td>{{ attend.attend_date }}</td>
-               
-           
-                
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6">No students found.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+
+
+<div class="container" style="display: flex; flex-direction: column; align-items: center;">
+   
+  
+<form method="get" class="form-inline "style="display: flex; flex-direction: row; align-items: center;">
+    <label for="search_term">Search: </label>
+    <input type="text" class="form-control form-inline" id="search_term" name="search_term" placeholder="Enter name, Class name">
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Student</th>
+        <th>Class Name</th>
+        <th>Attend Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for attend in attendances %}
+      <tr>
+        <td>{{ attend.id }}</td>
+        <td>{{ attend.student }}</td>
+        <td>{{ attend.class_name }}</td>
+        <td>{{ attend.attend_date }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4">No students found matching your search criteria.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 {% endblock %}
